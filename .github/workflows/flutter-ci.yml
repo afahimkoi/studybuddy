@@ -1,27 +1,46 @@
-name: Flutter CI
+name: Build StudyBuddy Android App
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  build-android:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
+
+      - name: Generate Android project
+        run: flutter create --platforms=android --org com.studybuddy --project-name studybuddy .
+
       - name: Install dependencies
         run: flutter pub get
+
       - name: Static analysis
         run: flutter analyze
+
       - name: Widget tests
         run: flutter test
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Upload installable APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: StudyBuddy-Android-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 30
