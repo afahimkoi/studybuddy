@@ -326,7 +326,7 @@ class Stat extends StatelessWidget {
   @override Widget build(BuildContext context) => SizedBox(width: 205,
     child: Card(child: Padding(padding: const EdgeInsets.all(18),
       child: Row(children: [
-        CircleAvatar(backgroundColor: color.withOpacity(.12), foregroundColor: color, child: Icon(icon)),
+        CircleAvatar(backgroundColor: color.withValues(alpha: .12), foregroundColor: color, child: Icon(icon)),
         const SizedBox(width: 13),
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(value, style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900)),
@@ -407,7 +407,7 @@ Future<void> editTask(BuildContext context, StudyModel model, {TaskData? task}) 
           const SizedBox(height: 12),
           TextFormField(controller: course, validator: requiredText, decoration: const InputDecoration(labelText: 'Course')),
           const SizedBox(height: 12),
-          DropdownButtonFormField(value: priority, decoration: const InputDecoration(labelText: 'Priority'),
+          DropdownButtonFormField(initialValue: priority, decoration: const InputDecoration(labelText: 'Priority'),
             items: ['Low', 'Medium', 'High'].map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
             onChanged: (v) => setLocal(() => priority = v!)),
           const SizedBox(height: 12),
